@@ -1,6 +1,5 @@
 .vscode/*
 data/*
-pyKMLib/*
 data
 __pycache__/
 # -*- mode: gitignore; -*-

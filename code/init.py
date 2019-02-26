@@ -1,133 +1,49 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Dec 06 16:01:51 2013
-@author: Krszysztof Sopyła
-@email: krzysztofsopyla@gmail.com
-@license: MIT
-"""
-
-
-'''
-Simple usage of classifier
-'''
-
-
-import sys
-sys.path.append("../pyKMLib")
-
-import GPUSolvers as gslv
-import GPUKernels as gker
-
+import pandas as pd
+import xgboost as xgb
 import numpy as np
-import scipy.sparse as sp
+from sklearn.datasets import fetch_covtype
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix
 import time
 
-import pylab as pl
+df = pd.read_csv('../data/train.csv')
+df = df.drop(columns=['ID_code'])
+X = df.iloc[:,1:201]
+y = df.iloc[:,0]
 
-from sklearn import datasets
+# Create 0.75/0.25 train/test split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, train_size=0.75,
+                                                    random_state=42)
 
+# Specify sufficient boosting iterations to reach a minimum
+num_round = 3
 
-# import some data to play with
+# Leave most parameters as default
+param = {'objective': 'multi:softmax', # Specify multiclass classification
+         'num_class': 8, # Number of possible output classes
+         'tree_method': 'gpu_hist' # Use GPU accelerated algorithm
+         }
 
-#iris = datasets.load_iris()
-#X = iris.data
-#Y = iris.target
+# Convert input data from numpy to XGBoost format
+dtrain = xgb.DMatrix(X_train, label=y_train)
+dtest = xgb.DMatrix(X_test, label=y_test)
 
-# multiclass 
-X, Y = datasets.load_svmlight_file('../data/glass.scale.txt')
-#X, Y = datasets.load_svmlight_file('glass.scale_3cls.txt')
+gpu_res = {} # Store accuracy result
+tmp = time.time()
+# Train model
+modelXGB = xgb.train(param, dtrain, num_round, evals=[(dtest, 'test')], evals_result=gpu_res)
+print("CPU Training Time: %s seconds" % (str(time.time() - tmp)))
 
-#binary
-#X, Y = datasets.load_svmlight_file('glass.scale_binary')
-#X, Y = datasets.load_svmlight_file('Data/heart_scale')
-#X, Y = datasets.load_svmlight_file('Data/w8a')
-#X, Y = datasets.load_svmlight_file('toy_2d_16.train')
+y_pred = modelXGB.predict(X_test)
+print('Accuracy of logistic regression classifier on test set: {:.2f}'.format(modelXGB.score(X_test, y_test)))
 
-
-#set the classifier parameters
-C=0.1 #penalty SVM parameter
-gamma=1.0 #RBF kernel gamma parameter
-
-
-
-svm_solver = gslv.GPUSVM2Col(X,Y,C)
-#kernel = Linear()
-kernel = gker.GPURBFEll(gamma=gamma)
-
-#init the classifier, mainly it inits the cuda module and transform data into 
-#particular format
-t0=time.clock()
-svm_solver.init(kernel)
-t1=time.clock()
-print ('\nInit takes',t1-t0)
+df_test= pd.read_csv('../data/test.csv')
+df_x_test = df_test.drop(columns = ['ID_code'])
+y_pred = modelXGB.predict(df_x_test)
+df_y = pd.DataFrame(y_pred)
+df_submission = pd.merge(pd.DataFrame(df_test['ID_code']),df_y,left_index=True,right_index=True)
 
 
-#start trainning
-t0=time.clock()
+df_submission = df_submission.rename(columns={0: 'target'})
 
-svm_solver.train()
-
-t1=time.clock()
-
-print ('\nTakes: ', t1-t0)
-
-#one model coresponds to one classifier in All vs All (or One vs One) multiclass approach
-#for each model show solution details
-for k in xrange(len(svm_solver.models)):
-    m=svm_solver.models[k]
-    print ('Iter=',m.Iter)
-    print ('Obj={} Rho={}'.format(m.Obj,m.Rho))
-
-    print ('nSV=',m.NSV)
-    #print m.Alpha
-
-#start prediction
-t0=time.clock()
-pred2,dec_vals=svm_solver.predict(X)
-t1=time.clock()
-
-
-svm_solver.clean()
-
-print ('\nPredict Takes: ', t1-t0)
-#print pred2
-acc = (0.0+sum(Y==pred2))/len(Y)
-
-print ('acc=',acc)
-
-
-#libsvm from sklearn
-from sklearn import svm
-
-clf = svm.SVC(C=C,kernel='linear',verbose=True)
-clf = svm.SVC(C=C,kernel='rbf',gamma=gamma,verbose=True)
-t0=time.clock()
-svm_m= clf.fit(X,Y)
-t1=time.clock()
-#
-print ('\nTrains Takes: ', t1-t0)
-#print 'alpha\n',clf.dual_coef_.toarray()
-
-#print 'nSV=',clf.n_support_
-#print 'sv \n',clf.support_vectors_.toarray()
-#print 'sv idx=',clf.support_
-
-
-t0=time.clock()
-pred1 = clf.predict(X)
-t1=time.clock()
-print ('\nPredict Takes: ', t1-t0)
-#print pred1
-acc = (0.0+sum(Y==pred1))/len(Y)
-
-print ('acc=',acc)
-
-print ('--------------\n')
-
-
-#np.random.seed(0)
-#n=6
-#X = np.random.randn(n, 2)
-#Y = np.random.randint(1,4,n)
-#X = np.array([ (1,2), (3,4), (5,6), (7,8), (9,0)])
-#Y = np.array([4,1,2,1,4])
+df_submission.to_csv('../data/submit2.csv', encoding='utf-8', index=False)

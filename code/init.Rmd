@@ -1,0 +1,137 @@
+---
+title: "NBA"
+author: "Sahba Salarian"
+date: 'Feb. 2019'
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.pos = 'H')
+knitr::opts_chunk$set(warning=FALSE)
+knitr::opts_chunk$set(message=FALSE)
+library(xtable)
+options(xtable.comment = FALSE)
+library(knitr)
+library(tidyverse)
+library(ggplot2)
+library(bestglm) 
+library(stargazer)
+library(corrplot)
+library(car)
+library(repr)
+library(MASS)
+library(leaps)
+library(pROC)
+library(ROCR)
+library(caret)
+library(kernlab)
+library(e1071)
+library(GGally)
+library(plyr)
+```
+
+#Introduction
+
+
+
+```{r GETDATA, echo=TRUE}
+df_raw <-read.csv("../data/train.csv", header=T, stringsAsFactors=F)
+str(df_raw)
+```
+
+## Data engineering : 
+
+In this stage the NA values of the data set has been detedcted and the rows with such values are omitted from the data set. 
+
+```{r Omit NA , echo = FALSE}
+df <- na.omit(df_raw)
+#creating a data set without names:
+df <- df[,2:202]
+str(df)
+```
+
+
+#Train/Test Split:
+
+
+```{r test&cv&train, echo = FALSE}
+set.seed(798102) 
+split <- sample (2, nrow (df), replace= TRUE, prob = c (0.7, 0.3))
+train <- df [split==1,]
+test <- df [split==2,]
+```
+
+
+
+## Use caret for training machine learning models
+
+##Use GLM to fit the model
+
+```{r caret initialization}
+#caret default
+caretControl <- trainControl(method = "boot",number = 25, classProbs =  TRUE)
+```
+
+
+```{r}
+train$target <- revalue(as.factor(train$target), c("0"="zero", "1"="one"))
+test$target <- revalue(as.factor(test$target), c("0"="zero", "1"="one"))
+levels(as.factor(train$target))
+levels(as.factor(test$target))
+```
+
+
+
+```{r trian GLM}
+set.seed(3233)
+modelGLM <- train(as.factor(target)~., data = train, method = "glm",
+                 trControl=caretControl)
+summary(modelGLM)
+modelGLM
+```
+
+
+```{r GLM Confusion Matrix}
+#turn probabilities into classess and look at their frequencies:
+p_modelGLM <- predict(modelGLM, test, type="prob")
+p_ClassGLM <- predict(modelGLM, test)
+confusionMatrix(p_ClassGLM, factor(test$target))
+```
+
+
+##SVM
+##SVMLinear
+```{r trian SVM Linear}
+set.seed(3233)
+modelSVMLinear <- train(factor(target)~., data = train, method = "svmLinear",
+                 trControl=caretControl, Probs =  TRUE)
+summary(modelSVMLinear)
+modelSVMLinear
+```
+
+
+```{r}
+p_modelSVMLinear <- predict(modelSVMLinear, test, "prob")
+p_ClassSVMLinear <- predict(modelSVMLinear, test)
+confusionMatrix(p_ClassSVMLinear, factor(test$target))
+```
+
+
+```{r ROC for GLM}
+ROC_GLM <- roc(factor(test$target)~p_modelGLM[,2], plot = TRUE, print.auc = TRUE,main="ROC for GLM")
+```
+
+
+
+```{r ROC for SVMlinear}
+ROC_SVMlinear<- roc(factor(test$target)~p_modelSVMLinear[,2], plot = TRUE, print.auc = TRUE, main="ROC for SVM withlinear kernel")
+```
+
+
+
+
+
+
+
