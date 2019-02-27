@@ -1,5 +1,6 @@
 .vscode/*
 data/*
+models/*
 data
 __pycache__/
 # -*- mode: gitignore; -*-

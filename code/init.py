@@ -34,16 +34,44 @@ tmp = time.time()
 modelXGB = xgb.train(param, dtrain, num_round, evals=[(dtest, 'test')], evals_result=gpu_res)
 print("CPU Training Time: %s seconds" % (str(time.time() - tmp)))
 
-y_pred = modelXGB.predict(X_test)
-print('Accuracy of logistic regression classifier on test set: {:.2f}'.format(modelXGB.score(X_test, y_test)))
 
-df_test= pd.read_csv('../data/test.csv')
+# path to where the data lies
+dpath = '../data'
+
+modelfile = modelXGB
+outfile = 'submission2.csv'
+# make top 15% as positive
+threshold_ratio = 0.15
+
+# load in training data, directly use numpy
+df_test =  pd.read_csv('../data/test.csv')
 df_x_test = df_test.drop(columns = ['ID_code'])
-y_pred = modelXGB.predict(df_x_test)
-df_y = pd.DataFrame(y_pred)
-df_submission = pd.merge(pd.DataFrame(df_test['ID_code']),df_y,left_index=True,right_index=True)
 
+print ('finish loading from csv ')
+xgmat = xgb.DMatrix( df_test, missing = -999.0 )
+ypred = modelXGB.predict( xgmat )
 
-df_submission = df_submission.rename(columns={0: 'target'})
+res  = [ ( int(idx[i]), ypred[i] ) for i in range(len(ypred)) ]
 
-df_submission.to_csv('../data/submit2.csv', encoding='utf-8', index=False)
+rorder = {}
+for k, v in sorted( res, key = lambda x:-x[1] ):
+    rorder[ k ] = len(rorder) + 1
+
+# write out predictions
+ntop = int( threshold_ratio * len(rorder ) )
+fo = open(outfile, 'w')
+nhit = 0
+ntot = 0
+fo.write('EventId,RankOrder,Class\n')
+for k, v in res:
+    if rorder[k] <= ntop:
+        lb = 's'
+        nhit += 1
+    else:
+        lb = 'b'
+    # change output rank order to follow Kaggle convention
+    fo.write('%s,%d,%s\n' % ( k,  len(rorder)+1-rorder[k], lb ) )
+    ntot += 1
+fo.close()
+
+print ('finished writing into prediction file')

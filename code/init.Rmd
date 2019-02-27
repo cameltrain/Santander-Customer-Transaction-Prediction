@@ -38,7 +38,6 @@ library(plyr)
 
 ```{r GETDATA, echo=TRUE}
 df_raw <-read.csv("../data/train.csv", header=T, stringsAsFactors=F)
-str(df_raw)
 ```
 
 ## Data engineering : 
@@ -49,7 +48,6 @@ In this stage the NA values of the data set has been detedcted and the rows with
 df <- na.omit(df_raw)
 #creating a data set without names:
 df <- df[,2:202]
-str(df)
 ```
 
 
@@ -85,37 +83,29 @@ levels(as.factor(test$target))
 
 
 ```{r trian GLM}
-set.seed(3233)
-modelGLM <- train(as.factor(target)~., data = train, method = "glm",
-                 trControl=caretControl)
-summary(modelGLM)
-modelGLM
+#set.seed(3233)
+#modelGLM <- train(as.factor(target)~., data = train, method = "glm",
+#                 trControl=caretControl)
+```
+
+```{r}
+#saveRDS(modelGLM, "../models/modelGLM.rds")
+```
+
+```{r}
+#save(modelGLM, file = "../models/modelGLM.rda")
 ```
 
 
 ```{r GLM Confusion Matrix}
+# load the model
+#load(file = "../models/modelGLM.rda")
+modelGLM <- readRDS("../models/modelGLM.rds")
+print(modelGLM)
 #turn probabilities into classess and look at their frequencies:
 p_modelGLM <- predict(modelGLM, test, type="prob")
 p_ClassGLM <- predict(modelGLM, test)
 confusionMatrix(p_ClassGLM, factor(test$target))
-```
-
-
-##SVM
-##SVMLinear
-```{r trian SVM Linear}
-set.seed(3233)
-modelSVMLinear <- train(factor(target)~., data = train, method = "svmLinear",
-                 trControl=caretControl, Probs =  TRUE)
-summary(modelSVMLinear)
-modelSVMLinear
-```
-
-
-```{r}
-p_modelSVMLinear <- predict(modelSVMLinear, test, "prob")
-p_ClassSVMLinear <- predict(modelSVMLinear, test)
-confusionMatrix(p_ClassSVMLinear, factor(test$target))
 ```
 
 
@@ -125,13 +115,16 @@ ROC_GLM <- roc(factor(test$target)~p_modelGLM[,2], plot = TRUE, print.auc = TRUE
 
 
 
-```{r ROC for SVMlinear}
-ROC_SVMlinear<- roc(factor(test$target)~p_modelSVMLinear[,2], plot = TRUE, print.auc = TRUE, main="ROC for SVM withlinear kernel")
+```{r GETDATA, echo=TRUE}
+df_test <-read.csv("../data/test.csv", header=T, stringsAsFactors=F)
 ```
 
 
+```{r}
+p_modelGLM_test <- predict(modelGLM, df_test[,1:201], type="prob")
+```
 
-
-
-
+```{r}
+str(p_modelGLM_test)
+```
 
