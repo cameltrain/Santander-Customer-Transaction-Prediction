@@ -121,10 +121,17 @@ df_test <-read.csv("../data/test.csv", header=T, stringsAsFactors=F)
 
 
 ```{r}
-p_modelGLM_test <- predict(modelGLM, df_test[,1:201], type="prob")
+#p_modelGLM_test <- predict(modelGLM, df_test[,1:201], type="prob")
+p_Class_modelGLM <- predict(modelGLM, df_test[,1:201])
 ```
 
 ```{r}
-str(p_modelGLM_test)
+#str(p_modelGLM_test)
+str(p_Class_modelGLM)
+```
+
+```{r}
+p_Class_modelGLM_v <- revalue(p_Class_modelGLM, c("zero"=0, "one"=1))
+write.csv(p_Class_modelGLM_v, file = "../data/submit2.csv")
 ```
 
