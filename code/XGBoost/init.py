@@ -7,7 +7,7 @@ from sklearn.metrics import confusion_matrix
 from sklearn.externals import joblib
 import time
 
-df = pd.read_csv('../data/train.csv')
+df = pd.read_csv('../../data/train.csv',engine='python')
 df = df.drop(columns=['ID_code'])
 X = df.iloc[:,1:201]
 y = df.iloc[:,0]
@@ -22,7 +22,7 @@ num_round = 2000
 # Leave most parameters as default
 param = {'objective': 'multi:softmax', # Specify multiclass classification
          'num_class': 2, # Number of possible output classes
-         'bin':8,
+         'bin':64,
          'tree_method': 'gpu_hist' # Use GPU accelerated algorithm
          }
 
@@ -36,7 +36,7 @@ tmp = time.time()
 modelXGB = xgb.train(param, dtrain, num_round, evals=[(dtest, 'test')], evals_result=gpu_res)
 print("CPU Training Time: %s seconds" % (str(time.time() - tmp)))
 
-joblib.dump(modelXGB, '../data/modelXGB10.pkl', compress=9)
+joblib.dump(modelXGB, '../../models/modelXGB2000.pkl', compress=9)
 
 # load in training data, directly use numpy
 #df_test =  pd.read_csv('../data/testedited.csv')

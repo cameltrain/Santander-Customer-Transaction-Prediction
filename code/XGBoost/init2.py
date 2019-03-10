@@ -7,7 +7,7 @@ from sklearn.metrics import confusion_matrix
 from sklearn.externals import joblib
 import time
 from sklearn.externals import joblib
-modelXGB = joblib.load('../data/modelXGB10.pkl')
+modelXGB = joblib.load('../../models/modelXGB2000.pkl')
 
 # load in training data, directly use numpy
 
@@ -20,7 +20,7 @@ modelXGB = joblib.load('../data/modelXGB10.pkl')
 #ypred = modelXGB.predict( xgmat )
 
 
-df = pd.read_csv('../data/test.csv')
+df = pd.read_csv('../../data/test.csv')
 df = df.drop(columns=['ID_code'])
 
 
@@ -43,4 +43,4 @@ dtest = xgb.DMatrix(df)
 
 ypred = modelXGB.predict( dtest )
 
-#np.savetxt("../data/submit3.csv", ypred, delimiter=",")
+np.savetxt("../../data/submit3.csv", ypred, delimiter=",")
