@@ -1,0 +1,1390 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{Untitled}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+        \PY{k+kn}{import} \PY{n+nn}{xgboost} \PY{k}{as} \PY{n+nn}{xgb}
+        \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{datasets} \PY{k}{import} \PY{n}{fetch\PYZus{}covtype}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{model\PYZus{}selection} \PY{k}{import} \PY{n}{train\PYZus{}test\PYZus{}split}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{metrics} \PY{k}{import} \PY{n}{confusion\PYZus{}matrix}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{externals} \PY{k}{import} \PY{n}{joblib}
+        \PY{k+kn}{import} \PY{n+nn}{time}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{../../data/train.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{engine}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{python}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{df} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ID\PYZus{}code}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+        \PY{n}{X} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{:}\PY{l+m+mi}{201}\PY{p}{]}
+        \PY{n}{y} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}
+\end{Verbatim}
+
+
+    Create 0.75/0.25 train/test split
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{X\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}test} \PY{o}{=} \PY{n}{train\PYZus{}test\PYZus{}split}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{test\PYZus{}size}\PY{o}{=}\PY{l+m+mf}{0.25}\PY{p}{,} \PY{n}{train\PYZus{}size}\PY{o}{=}\PY{l+m+mf}{0.75}\PY{p}{,}\PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{42}\PY{p}{)}
+\end{Verbatim}
+
+
+    Specify sufficient boosting iterations to reach a minimum
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{n}{num\PYZus{}round} \PY{o}{=} \PY{l+m+mi}{1000}
+\end{Verbatim}
+
+
+    Leave most parameters as default
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{n}{param} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{objective}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{multi:softmax}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{c+c1}{\PYZsh{} Specify multiclass classification}
+                 \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{num\PYZus{}class}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+m+mi}{2}\PY{p}{,} \PY{c+c1}{\PYZsh{} Number of possible output classes}
+                 \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bin}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mi}{64}\PY{p}{,}
+                 \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tree\PYZus{}method}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gpu\PYZus{}hist}\PY{l+s+s1}{\PYZsq{}} \PY{c+c1}{\PYZsh{} Use GPU accelerated algorithm}
+                 \PY{p}{\PYZcb{}}
+\end{Verbatim}
+
+
+    Convert input data from numpy to XGBoost format
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{n}{dtrain} \PY{o}{=} \PY{n}{xgb}\PY{o}{.}\PY{n}{DMatrix}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{n}{y\PYZus{}train}\PY{p}{)}
+        \PY{n}{dtest} \PY{o}{=} \PY{n}{xgb}\PY{o}{.}\PY{n}{DMatrix}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{n}{y\PYZus{}test}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{n}{accuracy} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}} \PY{c+c1}{\PYZsh{} Store accuracy result}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{n}{modelXGB} \PY{o}{=} \PY{n}{xgb}\PY{o}{.}\PY{n}{train}\PY{p}{(}\PY{n}{param}\PY{p}{,} \PY{n}{dtrain}\PY{p}{,} \PY{n}{num\PYZus{}round}\PY{p}{,} \PY{n}{evals}\PY{o}{=}\PY{p}{[}\PY{p}{(}\PY{n}{dtest}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{test}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{]}\PY{p}{,} \PY{n}{evals\PYZus{}result}\PY{o}{=}\PY{n}{accuracy}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+[0]	test-merror:0.10404
+[1]	test-merror:0.10292
+[2]	test-merror:0.10212
+[3]	test-merror:0.10212
+[4]	test-merror:0.10198
+[5]	test-merror:0.10198
+[6]	test-merror:0.10198
+[7]	test-merror:0.10194
+[8]	test-merror:0.1018
+[9]	test-merror:0.10146
+[10]	test-merror:0.10138
+[11]	test-merror:0.10122
+[12]	test-merror:0.10108
+[13]	test-merror:0.10058
+[14]	test-merror:0.10034
+[15]	test-merror:0.10008
+[16]	test-merror:0.09992
+[17]	test-merror:0.09966
+[18]	test-merror:0.0994
+[19]	test-merror:0.09918
+[20]	test-merror:0.09898
+[21]	test-merror:0.0989
+[22]	test-merror:0.09836
+[23]	test-merror:0.0983
+[24]	test-merror:0.09796
+[25]	test-merror:0.09794
+[26]	test-merror:0.09776
+[27]	test-merror:0.09756
+[28]	test-merror:0.0974
+[29]	test-merror:0.0969
+[30]	test-merror:0.09684
+[31]	test-merror:0.09648
+[32]	test-merror:0.09632
+[33]	test-merror:0.09606
+[34]	test-merror:0.0959
+[35]	test-merror:0.0959
+[36]	test-merror:0.09558
+[37]	test-merror:0.09544
+[38]	test-merror:0.09522
+[39]	test-merror:0.09494
+[40]	test-merror:0.09472
+[41]	test-merror:0.09438
+[42]	test-merror:0.0943
+[43]	test-merror:0.09428
+[44]	test-merror:0.0942
+[45]	test-merror:0.09404
+[46]	test-merror:0.09396
+[47]	test-merror:0.09372
+[48]	test-merror:0.09344
+[49]	test-merror:0.0933
+[50]	test-merror:0.0934
+[51]	test-merror:0.09328
+[52]	test-merror:0.0934
+[53]	test-merror:0.09296
+[54]	test-merror:0.09294
+[55]	test-merror:0.0929
+[56]	test-merror:0.09284
+[57]	test-merror:0.09244
+[58]	test-merror:0.09226
+[59]	test-merror:0.0918
+[60]	test-merror:0.0918
+[61]	test-merror:0.09188
+[62]	test-merror:0.09168
+[63]	test-merror:0.09158
+[64]	test-merror:0.09148
+[65]	test-merror:0.09142
+[66]	test-merror:0.09118
+[67]	test-merror:0.09074
+[68]	test-merror:0.09092
+[69]	test-merror:0.09064
+[70]	test-merror:0.09044
+[71]	test-merror:0.0907
+[72]	test-merror:0.09058
+[73]	test-merror:0.09048
+[74]	test-merror:0.09
+[75]	test-merror:0.0901
+[76]	test-merror:0.09002
+[77]	test-merror:0.08978
+[78]	test-merror:0.09014
+[79]	test-merror:0.0899
+[80]	test-merror:0.08992
+[81]	test-merror:0.08972
+[82]	test-merror:0.08984
+[83]	test-merror:0.0897
+[84]	test-merror:0.08982
+[85]	test-merror:0.08952
+[86]	test-merror:0.08958
+[87]	test-merror:0.08964
+[88]	test-merror:0.08916
+[89]	test-merror:0.08916
+[90]	test-merror:0.08912
+[91]	test-merror:0.0889
+[92]	test-merror:0.08872
+[93]	test-merror:0.08884
+[94]	test-merror:0.08888
+[95]	test-merror:0.08896
+[96]	test-merror:0.0886
+[97]	test-merror:0.0884
+[98]	test-merror:0.08856
+[99]	test-merror:0.08838
+[100]	test-merror:0.08842
+[101]	test-merror:0.08828
+[102]	test-merror:0.08846
+[103]	test-merror:0.08834
+[104]	test-merror:0.08818
+[105]	test-merror:0.08838
+[106]	test-merror:0.08834
+[107]	test-merror:0.0883
+[108]	test-merror:0.08838
+[109]	test-merror:0.08818
+[110]	test-merror:0.0884
+[111]	test-merror:0.08826
+[112]	test-merror:0.08824
+[113]	test-merror:0.08824
+[114]	test-merror:0.08812
+[115]	test-merror:0.08832
+[116]	test-merror:0.08812
+[117]	test-merror:0.088
+[118]	test-merror:0.08806
+[119]	test-merror:0.08816
+[120]	test-merror:0.08776
+[121]	test-merror:0.08786
+[122]	test-merror:0.08758
+[123]	test-merror:0.08782
+[124]	test-merror:0.08808
+[125]	test-merror:0.08794
+[126]	test-merror:0.0879
+[127]	test-merror:0.08788
+[128]	test-merror:0.0879
+[129]	test-merror:0.0881
+[130]	test-merror:0.0878
+[131]	test-merror:0.08798
+[132]	test-merror:0.08798
+[133]	test-merror:0.08806
+[134]	test-merror:0.08764
+[135]	test-merror:0.08772
+[136]	test-merror:0.08786
+[137]	test-merror:0.08796
+[138]	test-merror:0.08796
+[139]	test-merror:0.08786
+[140]	test-merror:0.08768
+[141]	test-merror:0.08762
+[142]	test-merror:0.08758
+[143]	test-merror:0.08794
+[144]	test-merror:0.08782
+[145]	test-merror:0.0877
+[146]	test-merror:0.08756
+[147]	test-merror:0.08766
+[148]	test-merror:0.0874
+[149]	test-merror:0.08726
+[150]	test-merror:0.08756
+[151]	test-merror:0.08742
+[152]	test-merror:0.0876
+[153]	test-merror:0.08752
+[154]	test-merror:0.08752
+[155]	test-merror:0.0873
+[156]	test-merror:0.08722
+[157]	test-merror:0.08698
+[158]	test-merror:0.08706
+[159]	test-merror:0.08706
+[160]	test-merror:0.08698
+[161]	test-merror:0.08706
+[162]	test-merror:0.0872
+[163]	test-merror:0.08718
+[164]	test-merror:0.0871
+[165]	test-merror:0.08724
+[166]	test-merror:0.08702
+[167]	test-merror:0.08688
+[168]	test-merror:0.08674
+[169]	test-merror:0.08688
+[170]	test-merror:0.08672
+[171]	test-merror:0.08668
+[172]	test-merror:0.08662
+[173]	test-merror:0.08678
+[174]	test-merror:0.08698
+[175]	test-merror:0.08684
+[176]	test-merror:0.0869
+[177]	test-merror:0.08698
+[178]	test-merror:0.08696
+[179]	test-merror:0.08678
+[180]	test-merror:0.08692
+[181]	test-merror:0.087
+[182]	test-merror:0.08698
+[183]	test-merror:0.08702
+[184]	test-merror:0.08706
+[185]	test-merror:0.08712
+[186]	test-merror:0.08718
+[187]	test-merror:0.08728
+[188]	test-merror:0.08716
+[189]	test-merror:0.08732
+[190]	test-merror:0.08726
+[191]	test-merror:0.08724
+[192]	test-merror:0.08716
+[193]	test-merror:0.08722
+[194]	test-merror:0.0869
+[195]	test-merror:0.0869
+[196]	test-merror:0.08702
+[197]	test-merror:0.08714
+[198]	test-merror:0.0873
+[199]	test-merror:0.08726
+[200]	test-merror:0.08726
+[201]	test-merror:0.08728
+[202]	test-merror:0.08726
+[203]	test-merror:0.0874
+[204]	test-merror:0.08732
+[205]	test-merror:0.08732
+[206]	test-merror:0.08736
+[207]	test-merror:0.0874
+[208]	test-merror:0.08716
+[209]	test-merror:0.08728
+[210]	test-merror:0.08752
+[211]	test-merror:0.08752
+[212]	test-merror:0.08768
+[213]	test-merror:0.08754
+[214]	test-merror:0.08758
+[215]	test-merror:0.08752
+[216]	test-merror:0.08748
+[217]	test-merror:0.0873
+[218]	test-merror:0.08744
+[219]	test-merror:0.0874
+[220]	test-merror:0.08732
+[221]	test-merror:0.08724
+[222]	test-merror:0.08726
+[223]	test-merror:0.0874
+[224]	test-merror:0.08726
+[225]	test-merror:0.08728
+[226]	test-merror:0.0872
+[227]	test-merror:0.08724
+[228]	test-merror:0.0871
+[229]	test-merror:0.08754
+[230]	test-merror:0.08758
+[231]	test-merror:0.08746
+[232]	test-merror:0.08744
+[233]	test-merror:0.08724
+[234]	test-merror:0.0873
+[235]	test-merror:0.0873
+[236]	test-merror:0.08738
+[237]	test-merror:0.08744
+[238]	test-merror:0.08742
+[239]	test-merror:0.08742
+[240]	test-merror:0.0875
+[241]	test-merror:0.08736
+[242]	test-merror:0.08732
+[243]	test-merror:0.08746
+[244]	test-merror:0.0875
+[245]	test-merror:0.0877
+[246]	test-merror:0.08758
+[247]	test-merror:0.08746
+[248]	test-merror:0.08744
+[249]	test-merror:0.0874
+[250]	test-merror:0.0874
+[251]	test-merror:0.08724
+[252]	test-merror:0.08726
+[253]	test-merror:0.08732
+[254]	test-merror:0.08726
+[255]	test-merror:0.08744
+[256]	test-merror:0.08732
+[257]	test-merror:0.0874
+[258]	test-merror:0.08742
+[259]	test-merror:0.08732
+[260]	test-merror:0.08732
+[261]	test-merror:0.08716
+[262]	test-merror:0.08712
+[263]	test-merror:0.08708
+[264]	test-merror:0.0872
+[265]	test-merror:0.08712
+[266]	test-merror:0.08716
+[267]	test-merror:0.08712
+[268]	test-merror:0.0872
+[269]	test-merror:0.08726
+[270]	test-merror:0.08734
+[271]	test-merror:0.08732
+[272]	test-merror:0.08748
+[273]	test-merror:0.08746
+[274]	test-merror:0.08744
+[275]	test-merror:0.08734
+[276]	test-merror:0.08736
+[277]	test-merror:0.08744
+[278]	test-merror:0.08734
+[279]	test-merror:0.08746
+[280]	test-merror:0.08744
+[281]	test-merror:0.08736
+[282]	test-merror:0.0873
+[283]	test-merror:0.08746
+[284]	test-merror:0.08752
+[285]	test-merror:0.08742
+[286]	test-merror:0.0873
+[287]	test-merror:0.08718
+[288]	test-merror:0.0873
+[289]	test-merror:0.08722
+[290]	test-merror:0.08706
+[291]	test-merror:0.08724
+[292]	test-merror:0.08716
+[293]	test-merror:0.08726
+[294]	test-merror:0.08736
+[295]	test-merror:0.08724
+[296]	test-merror:0.08718
+[297]	test-merror:0.08732
+[298]	test-merror:0.08718
+[299]	test-merror:0.0872
+[300]	test-merror:0.0872
+[301]	test-merror:0.08716
+[302]	test-merror:0.08718
+[303]	test-merror:0.08726
+[304]	test-merror:0.08716
+[305]	test-merror:0.08722
+[306]	test-merror:0.08714
+[307]	test-merror:0.08716
+[308]	test-merror:0.08726
+[309]	test-merror:0.08714
+[310]	test-merror:0.08714
+[311]	test-merror:0.08718
+[312]	test-merror:0.08704
+[313]	test-merror:0.08682
+[314]	test-merror:0.08676
+[315]	test-merror:0.08674
+[316]	test-merror:0.0868
+[317]	test-merror:0.08672
+[318]	test-merror:0.08672
+[319]	test-merror:0.08672
+[320]	test-merror:0.08686
+[321]	test-merror:0.08684
+[322]	test-merror:0.08674
+[323]	test-merror:0.08674
+[324]	test-merror:0.08684
+[325]	test-merror:0.08672
+[326]	test-merror:0.08674
+[327]	test-merror:0.0867
+[328]	test-merror:0.08682
+[329]	test-merror:0.08684
+[330]	test-merror:0.08678
+[331]	test-merror:0.08672
+[332]	test-merror:0.08686
+[333]	test-merror:0.08682
+[334]	test-merror:0.0868
+[335]	test-merror:0.0868
+[336]	test-merror:0.08672
+[337]	test-merror:0.08644
+[338]	test-merror:0.08656
+[339]	test-merror:0.08644
+[340]	test-merror:0.08658
+[341]	test-merror:0.08668
+[342]	test-merror:0.08672
+[343]	test-merror:0.0868
+[344]	test-merror:0.08692
+[345]	test-merror:0.08702
+[346]	test-merror:0.08706
+[347]	test-merror:0.08722
+[348]	test-merror:0.08706
+[349]	test-merror:0.087
+[350]	test-merror:0.08694
+[351]	test-merror:0.0869
+[352]	test-merror:0.0867
+[353]	test-merror:0.08672
+[354]	test-merror:0.0867
+[355]	test-merror:0.08668
+[356]	test-merror:0.08672
+[357]	test-merror:0.08686
+[358]	test-merror:0.08672
+[359]	test-merror:0.08692
+[360]	test-merror:0.08702
+[361]	test-merror:0.08704
+[362]	test-merror:0.08698
+[363]	test-merror:0.0868
+[364]	test-merror:0.08692
+[365]	test-merror:0.08666
+[366]	test-merror:0.08656
+[367]	test-merror:0.0866
+[368]	test-merror:0.08662
+[369]	test-merror:0.08672
+[370]	test-merror:0.08686
+[371]	test-merror:0.08706
+[372]	test-merror:0.08718
+[373]	test-merror:0.08708
+[374]	test-merror:0.08706
+[375]	test-merror:0.08694
+[376]	test-merror:0.08708
+[377]	test-merror:0.0871
+[378]	test-merror:0.08714
+[379]	test-merror:0.0871
+[380]	test-merror:0.08718
+[381]	test-merror:0.08712
+[382]	test-merror:0.08692
+[383]	test-merror:0.0869
+[384]	test-merror:0.0869
+[385]	test-merror:0.08686
+[386]	test-merror:0.08692
+[387]	test-merror:0.08678
+[388]	test-merror:0.0868
+[389]	test-merror:0.08698
+[390]	test-merror:0.08704
+[391]	test-merror:0.08714
+[392]	test-merror:0.0872
+[393]	test-merror:0.08714
+[394]	test-merror:0.08712
+[395]	test-merror:0.08718
+[396]	test-merror:0.08712
+[397]	test-merror:0.08708
+[398]	test-merror:0.08696
+[399]	test-merror:0.08702
+[400]	test-merror:0.08686
+[401]	test-merror:0.08698
+[402]	test-merror:0.08684
+[403]	test-merror:0.0869
+[404]	test-merror:0.08696
+[405]	test-merror:0.0869
+[406]	test-merror:0.08692
+[407]	test-merror:0.08684
+[408]	test-merror:0.08674
+[409]	test-merror:0.0869
+[410]	test-merror:0.08684
+[411]	test-merror:0.08688
+[412]	test-merror:0.08672
+[413]	test-merror:0.08676
+[414]	test-merror:0.08678
+[415]	test-merror:0.08678
+[416]	test-merror:0.08666
+[417]	test-merror:0.0867
+[418]	test-merror:0.0866
+[419]	test-merror:0.0865
+[420]	test-merror:0.08646
+[421]	test-merror:0.08656
+[422]	test-merror:0.0864
+[423]	test-merror:0.08658
+[424]	test-merror:0.08638
+[425]	test-merror:0.08636
+[426]	test-merror:0.0864
+[427]	test-merror:0.0863
+[428]	test-merror:0.08624
+[429]	test-merror:0.08652
+[430]	test-merror:0.08652
+[431]	test-merror:0.08644
+[432]	test-merror:0.0864
+[433]	test-merror:0.08662
+[434]	test-merror:0.08642
+[435]	test-merror:0.08656
+[436]	test-merror:0.08658
+[437]	test-merror:0.08646
+[438]	test-merror:0.08642
+[439]	test-merror:0.08654
+[440]	test-merror:0.08638
+[441]	test-merror:0.08646
+[442]	test-merror:0.08652
+[443]	test-merror:0.08638
+[444]	test-merror:0.0863
+[445]	test-merror:0.08628
+[446]	test-merror:0.08636
+[447]	test-merror:0.0864
+[448]	test-merror:0.08644
+[449]	test-merror:0.08646
+[450]	test-merror:0.08662
+[451]	test-merror:0.08642
+[452]	test-merror:0.0864
+[453]	test-merror:0.08648
+[454]	test-merror:0.08636
+[455]	test-merror:0.08638
+[456]	test-merror:0.08636
+[457]	test-merror:0.08642
+[458]	test-merror:0.0864
+[459]	test-merror:0.08642
+[460]	test-merror:0.08652
+[461]	test-merror:0.08664
+[462]	test-merror:0.08654
+[463]	test-merror:0.08658
+[464]	test-merror:0.08652
+[465]	test-merror:0.0865
+[466]	test-merror:0.08662
+[467]	test-merror:0.08674
+[468]	test-merror:0.0866
+[469]	test-merror:0.08674
+[470]	test-merror:0.08658
+[471]	test-merror:0.0863
+[472]	test-merror:0.0864
+[473]	test-merror:0.0864
+[474]	test-merror:0.08656
+[475]	test-merror:0.08646
+[476]	test-merror:0.0864
+[477]	test-merror:0.08652
+[478]	test-merror:0.08644
+[479]	test-merror:0.08644
+[480]	test-merror:0.08638
+[481]	test-merror:0.08648
+[482]	test-merror:0.08646
+[483]	test-merror:0.08644
+[484]	test-merror:0.08644
+[485]	test-merror:0.08644
+[486]	test-merror:0.08652
+[487]	test-merror:0.08662
+[488]	test-merror:0.08658
+[489]	test-merror:0.08668
+[490]	test-merror:0.08688
+[491]	test-merror:0.08676
+[492]	test-merror:0.08692
+[493]	test-merror:0.08688
+[494]	test-merror:0.08678
+[495]	test-merror:0.08666
+[496]	test-merror:0.0866
+[497]	test-merror:0.08656
+[498]	test-merror:0.0866
+[499]	test-merror:0.08666
+[500]	test-merror:0.08656
+[501]	test-merror:0.0864
+[502]	test-merror:0.08642
+[503]	test-merror:0.08638
+[504]	test-merror:0.08654
+[505]	test-merror:0.08658
+[506]	test-merror:0.08652
+[507]	test-merror:0.0866
+[508]	test-merror:0.08642
+[509]	test-merror:0.08626
+[510]	test-merror:0.08624
+[511]	test-merror:0.0863
+[512]	test-merror:0.08644
+[513]	test-merror:0.08644
+[514]	test-merror:0.08644
+[515]	test-merror:0.0864
+[516]	test-merror:0.08626
+[517]	test-merror:0.08636
+[518]	test-merror:0.08614
+[519]	test-merror:0.08614
+[520]	test-merror:0.08616
+[521]	test-merror:0.08626
+[522]	test-merror:0.08644
+[523]	test-merror:0.08656
+[524]	test-merror:0.08656
+[525]	test-merror:0.08638
+[526]	test-merror:0.0863
+[527]	test-merror:0.08622
+[528]	test-merror:0.08626
+[529]	test-merror:0.08626
+[530]	test-merror:0.0862
+[531]	test-merror:0.08612
+[532]	test-merror:0.08614
+[533]	test-merror:0.08606
+[534]	test-merror:0.08614
+[535]	test-merror:0.08614
+[536]	test-merror:0.08616
+[537]	test-merror:0.08636
+[538]	test-merror:0.08636
+[539]	test-merror:0.0864
+[540]	test-merror:0.08628
+[541]	test-merror:0.0864
+[542]	test-merror:0.0864
+[543]	test-merror:0.08636
+[544]	test-merror:0.08642
+[545]	test-merror:0.0864
+[546]	test-merror:0.08636
+[547]	test-merror:0.08634
+[548]	test-merror:0.08642
+[549]	test-merror:0.08632
+[550]	test-merror:0.08634
+[551]	test-merror:0.08648
+[552]	test-merror:0.08644
+[553]	test-merror:0.08652
+[554]	test-merror:0.08646
+[555]	test-merror:0.08646
+[556]	test-merror:0.0863
+[557]	test-merror:0.08642
+[558]	test-merror:0.08642
+[559]	test-merror:0.0865
+[560]	test-merror:0.08636
+[561]	test-merror:0.0865
+[562]	test-merror:0.08656
+[563]	test-merror:0.08658
+[564]	test-merror:0.08654
+[565]	test-merror:0.08648
+[566]	test-merror:0.0863
+[567]	test-merror:0.08632
+[568]	test-merror:0.0863
+[569]	test-merror:0.08644
+[570]	test-merror:0.08634
+[571]	test-merror:0.08646
+[572]	test-merror:0.08648
+[573]	test-merror:0.08646
+[574]	test-merror:0.08616
+[575]	test-merror:0.086
+[576]	test-merror:0.08608
+[577]	test-merror:0.08618
+[578]	test-merror:0.08626
+[579]	test-merror:0.08614
+[580]	test-merror:0.08616
+[581]	test-merror:0.08622
+[582]	test-merror:0.086
+[583]	test-merror:0.08598
+[584]	test-merror:0.08616
+[585]	test-merror:0.0862
+[586]	test-merror:0.08614
+[587]	test-merror:0.08598
+[588]	test-merror:0.08604
+[589]	test-merror:0.08612
+[590]	test-merror:0.08604
+[591]	test-merror:0.08606
+[592]	test-merror:0.086
+[593]	test-merror:0.086
+[594]	test-merror:0.08594
+[595]	test-merror:0.086
+[596]	test-merror:0.0859
+[597]	test-merror:0.0857
+[598]	test-merror:0.0856
+[599]	test-merror:0.08562
+[600]	test-merror:0.08556
+[601]	test-merror:0.08572
+[602]	test-merror:0.08562
+[603]	test-merror:0.0859
+[604]	test-merror:0.08582
+[605]	test-merror:0.08562
+[606]	test-merror:0.0857
+[607]	test-merror:0.08574
+[608]	test-merror:0.08568
+[609]	test-merror:0.08572
+[610]	test-merror:0.08578
+[611]	test-merror:0.0857
+[612]	test-merror:0.08564
+[613]	test-merror:0.08578
+[614]	test-merror:0.08584
+[615]	test-merror:0.08588
+[616]	test-merror:0.08586
+[617]	test-merror:0.0859
+[618]	test-merror:0.08586
+[619]	test-merror:0.086
+[620]	test-merror:0.08588
+[621]	test-merror:0.08582
+[622]	test-merror:0.0858
+[623]	test-merror:0.08588
+[624]	test-merror:0.08602
+[625]	test-merror:0.08586
+[626]	test-merror:0.08582
+[627]	test-merror:0.08576
+[628]	test-merror:0.08576
+[629]	test-merror:0.0858
+[630]	test-merror:0.08574
+[631]	test-merror:0.08578
+[632]	test-merror:0.08576
+[633]	test-merror:0.08578
+[634]	test-merror:0.08576
+[635]	test-merror:0.08562
+[636]	test-merror:0.08564
+[637]	test-merror:0.0856
+[638]	test-merror:0.08558
+[639]	test-merror:0.08568
+[640]	test-merror:0.08568
+[641]	test-merror:0.08584
+[642]	test-merror:0.08586
+[643]	test-merror:0.08584
+[644]	test-merror:0.08576
+[645]	test-merror:0.08558
+[646]	test-merror:0.08554
+[647]	test-merror:0.0857
+[648]	test-merror:0.08578
+[649]	test-merror:0.08568
+[650]	test-merror:0.0856
+[651]	test-merror:0.0856
+[652]	test-merror:0.08548
+[653]	test-merror:0.08568
+[654]	test-merror:0.08564
+[655]	test-merror:0.08578
+[656]	test-merror:0.08564
+[657]	test-merror:0.08556
+[658]	test-merror:0.08562
+[659]	test-merror:0.08588
+[660]	test-merror:0.08588
+[661]	test-merror:0.08586
+[662]	test-merror:0.08588
+[663]	test-merror:0.08604
+[664]	test-merror:0.08596
+[665]	test-merror:0.0859
+[666]	test-merror:0.08594
+[667]	test-merror:0.08586
+[668]	test-merror:0.08594
+[669]	test-merror:0.08596
+[670]	test-merror:0.08594
+[671]	test-merror:0.0861
+[672]	test-merror:0.086
+[673]	test-merror:0.08614
+[674]	test-merror:0.08622
+[675]	test-merror:0.08638
+[676]	test-merror:0.0864
+[677]	test-merror:0.08652
+[678]	test-merror:0.0864
+[679]	test-merror:0.08622
+[680]	test-merror:0.08616
+[681]	test-merror:0.08608
+[682]	test-merror:0.08598
+[683]	test-merror:0.08588
+[684]	test-merror:0.08582
+[685]	test-merror:0.08578
+[686]	test-merror:0.0858
+[687]	test-merror:0.08594
+[688]	test-merror:0.086
+[689]	test-merror:0.08592
+[690]	test-merror:0.08602
+[691]	test-merror:0.08596
+[692]	test-merror:0.0858
+[693]	test-merror:0.08578
+[694]	test-merror:0.08586
+[695]	test-merror:0.08572
+[696]	test-merror:0.08572
+[697]	test-merror:0.0857
+[698]	test-merror:0.08576
+[699]	test-merror:0.08584
+[700]	test-merror:0.08572
+[701]	test-merror:0.08574
+[702]	test-merror:0.0856
+[703]	test-merror:0.08566
+[704]	test-merror:0.0856
+[705]	test-merror:0.08556
+[706]	test-merror:0.0857
+[707]	test-merror:0.08582
+[708]	test-merror:0.08568
+[709]	test-merror:0.08558
+[710]	test-merror:0.08566
+[711]	test-merror:0.08546
+[712]	test-merror:0.0855
+[713]	test-merror:0.0853
+[714]	test-merror:0.0854
+[715]	test-merror:0.0854
+[716]	test-merror:0.08536
+[717]	test-merror:0.08544
+[718]	test-merror:0.0853
+[719]	test-merror:0.08546
+[720]	test-merror:0.08534
+[721]	test-merror:0.08544
+[722]	test-merror:0.08538
+[723]	test-merror:0.0854
+[724]	test-merror:0.08538
+[725]	test-merror:0.0853
+[726]	test-merror:0.08528
+[727]	test-merror:0.08522
+[728]	test-merror:0.08528
+[729]	test-merror:0.08536
+[730]	test-merror:0.08538
+[731]	test-merror:0.0852
+[732]	test-merror:0.08542
+[733]	test-merror:0.0855
+[734]	test-merror:0.08536
+[735]	test-merror:0.08538
+[736]	test-merror:0.0855
+[737]	test-merror:0.08552
+[738]	test-merror:0.08536
+[739]	test-merror:0.08536
+[740]	test-merror:0.08528
+[741]	test-merror:0.08532
+[742]	test-merror:0.08536
+[743]	test-merror:0.08542
+[744]	test-merror:0.08552
+[745]	test-merror:0.08534
+[746]	test-merror:0.08542
+[747]	test-merror:0.0852
+[748]	test-merror:0.08522
+[749]	test-merror:0.0852
+[750]	test-merror:0.08532
+[751]	test-merror:0.08538
+[752]	test-merror:0.0854
+[753]	test-merror:0.08542
+[754]	test-merror:0.08532
+[755]	test-merror:0.08538
+[756]	test-merror:0.08542
+[757]	test-merror:0.08536
+[758]	test-merror:0.08538
+[759]	test-merror:0.08558
+[760]	test-merror:0.08546
+[761]	test-merror:0.08542
+[762]	test-merror:0.08536
+[763]	test-merror:0.08528
+[764]	test-merror:0.0854
+[765]	test-merror:0.08528
+[766]	test-merror:0.08528
+[767]	test-merror:0.08532
+[768]	test-merror:0.0853
+[769]	test-merror:0.08522
+[770]	test-merror:0.08528
+[771]	test-merror:0.08514
+[772]	test-merror:0.0853
+[773]	test-merror:0.0853
+[774]	test-merror:0.08528
+[775]	test-merror:0.08528
+[776]	test-merror:0.08516
+[777]	test-merror:0.08518
+[778]	test-merror:0.08514
+[779]	test-merror:0.08492
+[780]	test-merror:0.08504
+[781]	test-merror:0.08514
+[782]	test-merror:0.08508
+[783]	test-merror:0.08504
+[784]	test-merror:0.08498
+[785]	test-merror:0.08522
+[786]	test-merror:0.0852
+[787]	test-merror:0.08518
+[788]	test-merror:0.0853
+[789]	test-merror:0.08522
+[790]	test-merror:0.0851
+[791]	test-merror:0.08496
+[792]	test-merror:0.08506
+[793]	test-merror:0.08506
+[794]	test-merror:0.085
+[795]	test-merror:0.08494
+[796]	test-merror:0.08514
+[797]	test-merror:0.08508
+[798]	test-merror:0.08514
+[799]	test-merror:0.08518
+[800]	test-merror:0.08506
+[801]	test-merror:0.08514
+[802]	test-merror:0.08504
+[803]	test-merror:0.0849
+[804]	test-merror:0.08496
+[805]	test-merror:0.08492
+[806]	test-merror:0.08492
+[807]	test-merror:0.08506
+[808]	test-merror:0.08502
+[809]	test-merror:0.08496
+[810]	test-merror:0.085
+[811]	test-merror:0.08494
+[812]	test-merror:0.08508
+[813]	test-merror:0.08504
+[814]	test-merror:0.08496
+[815]	test-merror:0.08506
+[816]	test-merror:0.08512
+[817]	test-merror:0.08514
+[818]	test-merror:0.08508
+[819]	test-merror:0.08496
+[820]	test-merror:0.085
+[821]	test-merror:0.08496
+[822]	test-merror:0.0851
+[823]	test-merror:0.0852
+[824]	test-merror:0.08518
+[825]	test-merror:0.08512
+[826]	test-merror:0.085
+[827]	test-merror:0.08492
+[828]	test-merror:0.08504
+[829]	test-merror:0.08494
+[830]	test-merror:0.08494
+[831]	test-merror:0.08488
+[832]	test-merror:0.08488
+[833]	test-merror:0.08494
+[834]	test-merror:0.08498
+[835]	test-merror:0.08486
+[836]	test-merror:0.08478
+[837]	test-merror:0.08502
+[838]	test-merror:0.08504
+[839]	test-merror:0.0849
+[840]	test-merror:0.08504
+[841]	test-merror:0.08502
+[842]	test-merror:0.085
+[843]	test-merror:0.085
+[844]	test-merror:0.08492
+[845]	test-merror:0.08488
+[846]	test-merror:0.08484
+[847]	test-merror:0.08486
+[848]	test-merror:0.0847
+[849]	test-merror:0.08464
+[850]	test-merror:0.08462
+[851]	test-merror:0.08476
+[852]	test-merror:0.08474
+[853]	test-merror:0.08484
+[854]	test-merror:0.08472
+[855]	test-merror:0.0848
+[856]	test-merror:0.08484
+[857]	test-merror:0.085
+[858]	test-merror:0.08492
+[859]	test-merror:0.08484
+[860]	test-merror:0.08492
+[861]	test-merror:0.08508
+[862]	test-merror:0.085
+[863]	test-merror:0.085
+[864]	test-merror:0.08514
+[865]	test-merror:0.08532
+[866]	test-merror:0.08506
+[867]	test-merror:0.08508
+[868]	test-merror:0.0851
+[869]	test-merror:0.0851
+[870]	test-merror:0.08514
+[871]	test-merror:0.08502
+[872]	test-merror:0.08506
+[873]	test-merror:0.08496
+[874]	test-merror:0.08492
+[875]	test-merror:0.08502
+[876]	test-merror:0.08502
+[877]	test-merror:0.08504
+[878]	test-merror:0.08512
+[879]	test-merror:0.0851
+[880]	test-merror:0.08516
+[881]	test-merror:0.08518
+[882]	test-merror:0.08518
+[883]	test-merror:0.08504
+[884]	test-merror:0.08506
+[885]	test-merror:0.08512
+[886]	test-merror:0.08508
+[887]	test-merror:0.08506
+[888]	test-merror:0.08498
+[889]	test-merror:0.08504
+[890]	test-merror:0.08498
+[891]	test-merror:0.08508
+[892]	test-merror:0.0851
+[893]	test-merror:0.08494
+[894]	test-merror:0.08484
+[895]	test-merror:0.0848
+[896]	test-merror:0.08474
+[897]	test-merror:0.08464
+[898]	test-merror:0.08482
+[899]	test-merror:0.08476
+[900]	test-merror:0.08468
+[901]	test-merror:0.08474
+[902]	test-merror:0.08474
+[903]	test-merror:0.08476
+[904]	test-merror:0.0848
+[905]	test-merror:0.08476
+[906]	test-merror:0.08484
+[907]	test-merror:0.08502
+[908]	test-merror:0.08494
+[909]	test-merror:0.08484
+[910]	test-merror:0.0849
+[911]	test-merror:0.08468
+[912]	test-merror:0.08476
+[913]	test-merror:0.0848
+[914]	test-merror:0.08478
+[915]	test-merror:0.0846
+[916]	test-merror:0.0846
+[917]	test-merror:0.08454
+[918]	test-merror:0.08442
+[919]	test-merror:0.08446
+[920]	test-merror:0.0845
+[921]	test-merror:0.08456
+[922]	test-merror:0.08452
+[923]	test-merror:0.0844
+[924]	test-merror:0.0843
+[925]	test-merror:0.08428
+[926]	test-merror:0.0843
+[927]	test-merror:0.08436
+[928]	test-merror:0.08424
+[929]	test-merror:0.08418
+[930]	test-merror:0.08422
+[931]	test-merror:0.08416
+[932]	test-merror:0.0842
+[933]	test-merror:0.0841
+[934]	test-merror:0.08416
+[935]	test-merror:0.08416
+[936]	test-merror:0.08436
+[937]	test-merror:0.08446
+[938]	test-merror:0.0844
+[939]	test-merror:0.08426
+[940]	test-merror:0.08444
+[941]	test-merror:0.0844
+[942]	test-merror:0.08448
+[943]	test-merror:0.08446
+[944]	test-merror:0.08438
+[945]	test-merror:0.0844
+[946]	test-merror:0.08434
+[947]	test-merror:0.08436
+[948]	test-merror:0.08442
+[949]	test-merror:0.0844
+[950]	test-merror:0.08446
+[951]	test-merror:0.08454
+[952]	test-merror:0.0845
+[953]	test-merror:0.0845
+[954]	test-merror:0.08438
+[955]	test-merror:0.08442
+[956]	test-merror:0.08442
+[957]	test-merror:0.08434
+[958]	test-merror:0.08434
+[959]	test-merror:0.08432
+[960]	test-merror:0.0844
+[961]	test-merror:0.0844
+[962]	test-merror:0.08444
+[963]	test-merror:0.08444
+[964]	test-merror:0.08434
+[965]	test-merror:0.08434
+[966]	test-merror:0.08438
+[967]	test-merror:0.08452
+[968]	test-merror:0.08446
+[969]	test-merror:0.0847
+[970]	test-merror:0.08468
+[971]	test-merror:0.08468
+[972]	test-merror:0.08472
+[973]	test-merror:0.08466
+[974]	test-merror:0.08474
+[975]	test-merror:0.08486
+[976]	test-merror:0.0848
+[977]	test-merror:0.08478
+[978]	test-merror:0.08472
+[979]	test-merror:0.08482
+[980]	test-merror:0.08484
+[981]	test-merror:0.08476
+[982]	test-merror:0.0847
+[983]	test-merror:0.08468
+[984]	test-merror:0.08454
+[985]	test-merror:0.08446
+[986]	test-merror:0.08466
+[987]	test-merror:0.0847
+[988]	test-merror:0.0849
+[989]	test-merror:0.08492
+[990]	test-merror:0.08482
+[991]	test-merror:0.08492
+[992]	test-merror:0.08488
+[993]	test-merror:0.08482
+[994]	test-merror:0.0846
+[995]	test-merror:0.0846
+[996]	test-merror:0.0846
+[997]	test-merror:0.08466
+[998]	test-merror:0.08464
+[999]	test-merror:0.08458
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{n}{joblib}\PY{o}{.}\PY{n}{dump}\PY{p}{(}\PY{n}{modelXGB}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{../../models/modelXGB1000.pkl}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{compress}\PY{o}{=}\PY{l+m+mi}{9}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}11}]:} ['../../models/modelXGB1000.pkl']
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{n}{modelXGB} \PY{o}{=} \PY{n}{joblib}\PY{o}{.}\PY{n}{load}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{../../models/modelXGB1000.pkl}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{../../data/test.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{df} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ID\PYZus{}code}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{n}{dtest} \PY{o}{=} \PY{n}{xgb}\PY{o}{.}\PY{n}{DMatrix}\PY{p}{(}\PY{n}{df}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{n}{ypred} \PY{o}{=} \PY{n}{modelXGB}\PY{o}{.}\PY{n}{predict}\PY{p}{(} \PY{n}{dtest} \PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{n}{np}\PY{o}{.}\PY{n}{savetxt}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{../../data/submit4.csv}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{ypred}\PY{p}{,} \PY{n}{delimiter}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{,}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}

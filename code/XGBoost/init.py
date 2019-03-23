@@ -13,8 +13,7 @@ X = df.iloc[:,1:201]
 y = df.iloc[:,0]
 
 # Create 0.75/0.25 train/test split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, train_size=0.75,
-                                                    random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, train_size=0.75,random_state=42)
 
 # Specify sufficient boosting iterations to reach a minimum
 num_round = 2000
